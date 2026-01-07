@@ -1,9 +1,4 @@
 ﻿// File: BarcodeIdScan/Implementations/SdkBarcodeReader.cs
-using System;
-using System.IO;
-using System.Threading.Tasks;
-using Inlite.ClearImageNet;
-
 namespace BarcodeIdScan.Implementations {
     /// <summary>
     /// Barcode reader implementation using Inlite SDK

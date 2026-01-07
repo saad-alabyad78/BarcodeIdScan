@@ -1,10 +1,8 @@
 ﻿
 
 using System.Diagnostics;
-using System.IO;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace BarcodeIdScan.Implementations {
     /// <summary>
@@ -15,7 +13,7 @@ namespace BarcodeIdScan.Implementations {
 
         public string ReaderType => "CLI";
 
-      
+
         public CliBarcodeReader() {
 
             // Try multiple locations

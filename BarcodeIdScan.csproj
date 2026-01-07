@@ -6,7 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+	
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<SelfContained>true</SelfContained>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	</PropertyGroup>
+	
 	<!-- Copy CLI exe to output directory -->
 	<ItemGroup>
 		<None Update="BarcodeReaderCLI.exe">

@@ -1,13 +1,9 @@
 ﻿// File: BarcodeIdScan/IBarcodeReader.cs
-using System.Threading.Tasks;
-
-namespace BarcodeIdScan
-{
+namespace BarcodeIdScan {
     /// <summary>
     /// Interface for barcode reading operations
     /// </summary>
-    public interface IBarcodeReader
-    {
+    public interface IBarcodeReader {
         /// <summary>
         /// Reads barcode from an image file
         /// </summary>
@@ -31,8 +27,7 @@ namespace BarcodeIdScan
     /// <summary>
     /// Result object for barcode reading operations
     /// </summary>
-    public class BarcodeReadResult
-    {
+    public class BarcodeReadResult {
         public bool Success { get; set; }
         public string? Type { get; set; }
         public string? Text { get; set; }
@@ -47,8 +42,7 @@ namespace BarcodeIdScan
     /// <summary>
     /// Barcode position information
     /// </summary>
-    public class BarcodeRectangle
-    {
+    public class BarcodeRectangle {
         public int Left { get; set; }
         public int Top { get; set; }
         public int Right { get; set; }

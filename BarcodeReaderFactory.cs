@@ -1,5 +1,4 @@
-﻿using System;
-using BarcodeIdScan.Implementations;
+﻿using BarcodeIdScan.Implementations;
 
 namespace BarcodeIdScan {
     /// <summary>
