@@ -1,0 +1,106 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\BarcodeReader\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{9CD7D184-6F5A-474F-A39C-4AB34CA6732E}|..\\BarcodeReaderApp\\BarcodeReaderApp.csproj|d:\\barcodereaderapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C137AD62-FECF-4255-AEA6-1F0A461EF07E}|BarcodeIdScan.csproj|d:\\barcodereader\\implementations\\clibarcodereader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C137AD62-FECF-4255-AEA6-1F0A461EF07E}|BarcodeIdScan.csproj|solutionrelative:implementations\\clibarcodereader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C137AD62-FECF-4255-AEA6-1F0A461EF07E}|BarcodeIdScan.csproj|d:\\barcodereader\\ibarcodereader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C137AD62-FECF-4255-AEA6-1F0A461EF07E}|BarcodeIdScan.csproj|solutionrelative:ibarcodereader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9CD7D184-6F5A-474F-A39C-4AB34CA6732E}|..\\BarcodeReaderApp\\BarcodeReaderApp.csproj|d:\\barcodereaderapp\\result_cli.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9CD7D184-6F5A-474F-A39C-4AB34CA6732E}|..\\BarcodeReaderApp\\BarcodeReaderApp.csproj|d:\\barcodereaderapp\\result_sdk.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CliBarcodeReader.cs",
+              "DocumentMoniker": "D:\\BarcodeReader\\Implementations\\CliBarcodeReader.cs",
+              "RelativeDocumentMoniker": "Implementations\\CliBarcodeReader.cs",
+              "ToolTip": "D:\\BarcodeReader\\Implementations\\CliBarcodeReader.cs",
+              "RelativeToolTip": "Implementations\\CliBarcodeReader.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-07T08:45:10.904Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IBarcodeReader.cs",
+              "DocumentMoniker": "D:\\BarcodeReader\\IBarcodeReader.cs",
+              "RelativeDocumentMoniker": "IBarcodeReader.cs",
+              "ToolTip": "D:\\BarcodeReader\\IBarcodeReader.cs",
+              "RelativeToolTip": "IBarcodeReader.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-07T08:45:05.283Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\BarcodeReaderApp\\Program.cs",
+              "RelativeDocumentMoniker": "..\\BarcodeReaderApp\\Program.cs",
+              "ToolTip": "D:\\BarcodeReaderApp\\Program.cs",
+              "RelativeToolTip": "..\\BarcodeReaderApp\\Program.cs",
+              "ViewState": "AQIAACUAAAAAAAAAAAAwwDkAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-07T08:44:58.451Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "result_cli.txt",
+              "DocumentMoniker": "D:\\BarcodeReaderApp\\result_cli.txt",
+              "RelativeDocumentMoniker": "..\\BarcodeReaderApp\\result_cli.txt",
+              "ToolTip": "D:\\BarcodeReaderApp\\result_cli.txt",
+              "RelativeToolTip": "..\\BarcodeReaderApp\\result_cli.txt",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2026-01-07T08:44:37.147Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "result_sdk.txt",
+              "DocumentMoniker": "D:\\BarcodeReaderApp\\result_sdk.txt",
+              "RelativeDocumentMoniker": "..\\BarcodeReaderApp\\result_sdk.txt",
+              "ToolTip": "D:\\BarcodeReaderApp\\result_sdk.txt",
+              "RelativeToolTip": "..\\BarcodeReaderApp\\result_sdk.txt",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAA4AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2026-01-07T08:44:27.738Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
