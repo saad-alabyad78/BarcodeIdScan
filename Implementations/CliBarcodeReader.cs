@@ -1,47 +1,36 @@
-﻿
-
+﻿// File: D:\BarcodeReader\Implementations\CliBarcodeReader.cs
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
+using BarcodeIdScan.Services;
 
 namespace BarcodeIdScan.Implementations {
-    /// <summary>
-    /// Barcode reader implementation using CLI executable
-    /// </summary>
     public class CliBarcodeReader : IBarcodeReader {
         private readonly string _cliPath;
+        private readonly ImageEnhancementService _enhancementService;
+        private string? _lastImagePath;
 
         public string ReaderType => "CLI";
 
-
         public CliBarcodeReader() {
+            _enhancementService = new ImageEnhancementService();
 
-            // Try multiple locations
-            var locations = new[]
-            {
-                // 1. Same directory as this assembly (BarcodeIdScan.dll)
+            var locations = new[] {
                 Path.Combine(Path.GetDirectoryName(typeof(CliBarcodeReader).Assembly.Location) ?? "", "BarcodeReaderCLI.exe"),
-            
-                // 2. Application base directory
                 Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "BarcodeReaderCLI.exe"),
-            
-                // 3. Parent directory
                 Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory)?.FullName ?? "", "BarcodeReaderCLI.exe")
             };
 
             _cliPath = locations.FirstOrDefault(File.Exists) ?? locations[0];
 
-            Console.WriteLine(_cliPath);
-
             if (!File.Exists(_cliPath)) {
-                throw new FileNotFoundException($"BarcodeReaderCLI.exe not found. Searched locations:\n" +
-                    $"- {Path.Combine(Path.GetDirectoryName(typeof(CliBarcodeReader).Assembly.Location) ?? "", "BarcodeReaderCLI.exe")}\n" +
-                    $"- {Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "BarcodeReaderCLI.exe")}");
+                throw new FileNotFoundException($"BarcodeReaderCLI.exe not found.");
             }
         }
 
         public BarcodeReadResult ReadBarcode(string imagePath, string barcodeType = "pdf417", int tbrCode = 103) {
-            var result = new BarcodeReadResult { Success = false };
+            _lastImagePath = imagePath;
+            var result = new BarcodeReadResult { Success = false, ImagePath = imagePath };
 
             try {
                 if (!File.Exists(imagePath)) {
@@ -49,10 +38,8 @@ namespace BarcodeIdScan.Implementations {
                     return result;
                 }
 
-                // Build command arguments
-                string arguments = $"-type={barcodeType} -tbr={tbrCode} \"{imagePath}\"";
+                string arguments = $"-type={barcodeType} \"{imagePath}\"";
 
-                // Execute CLI
                 var processInfo = new ProcessStartInfo {
                     FileName = _cliPath,
                     Arguments = arguments,
@@ -78,10 +65,7 @@ namespace BarcodeIdScan.Implementations {
                         return result;
                     }
 
-                    // Store raw JSON
                     result.RawJson = output;
-
-                    // Parse JSON output
                     ParseCLIOutput(output, result);
                 }
             }
@@ -92,8 +76,78 @@ namespace BarcodeIdScan.Implementations {
             return result;
         }
 
+        public async Task<BarcodeReadResult?> ReadAsync(string imagePath, string barcodeType = "pdf417", int tbrCode = 103) {
+            var result = await ReadBarcodeAsync(imagePath, barcodeType, tbrCode);
+            return result.Success ? result : null;
+        }
+
         public async Task<BarcodeReadResult> ReadBarcodeAsync(string imagePath, string barcodeType = "pdf417", int tbrCode = 103) {
             return await Task.Run(() => ReadBarcode(imagePath, barcodeType, tbrCode));
+        }
+
+        public async Task<BarcodeReadResult> ReadBarcodeWithEnhancementAsync(
+            string? imagePath = null,
+            EnhancementTechnique[]? enhancements = null,
+            string barcodeType = "pdf417",
+            int tbrCode = 103) {
+
+            return await Task.Run(() => {
+                var effectiveImagePath = imagePath ?? _lastImagePath;
+
+                if (string.IsNullOrEmpty(effectiveImagePath)) {
+                    return new BarcodeReadResult {
+                        Success = false,
+                        Error = "No image path provided and no cached path available"
+                    };
+                }
+
+                var effectiveEnhancements = enhancements ?? new[] { EnhancementTechnique.Sharpening };
+                var result = new BarcodeReadResult { Success = false, ImagePath = effectiveImagePath };
+
+                try {
+                    if (!File.Exists(effectiveImagePath)) {
+                        result.Error = $"File not found: {effectiveImagePath}";
+                        return result;
+                    }
+
+                    result = ReadBarcode(effectiveImagePath, barcodeType, tbrCode);
+                    if (result.Success) {
+                        result.SuccessfulEnhancement = "None (Original)";
+                        return result;
+                    }
+
+                    foreach (var technique in effectiveEnhancements) {
+                        if (technique == EnhancementTechnique.None) continue;
+
+                        string? enhancedPath = null;
+                        try {
+                            enhancedPath = _enhancementService.ApplyEnhancement(effectiveImagePath, technique);
+                            if (enhancedPath == null) continue;
+
+                            var enhancedResult = ReadBarcode(enhancedPath, barcodeType, tbrCode);
+
+                            if (enhancedResult.Success) {
+                                enhancedResult.SuccessfulEnhancement = technique.ToString();
+                                enhancedResult.EnhancedImagePath = enhancedPath;
+                                enhancedResult.ImagePath = effectiveImagePath;
+                                return enhancedResult;
+                            }
+                        }
+                        finally {
+                            if (enhancedPath != null && File.Exists(enhancedPath)) {
+                                try { File.Delete(enhancedPath); } catch { }
+                            }
+                        }
+                    }
+
+                    result.Error = "No barcodes found in image (even with enhancements)";
+                    return result;
+                }
+                catch (Exception ex) {
+                    result.Error = $"Enhancement Error: {ex.Message}";
+                    return result;
+                }
+            });
         }
 
         private void ParseCLIOutput(string json, BarcodeReadResult result) {
@@ -101,12 +155,10 @@ namespace BarcodeIdScan.Implementations {
                 using (JsonDocument doc = JsonDocument.Parse(json)) {
                     var root = doc.RootElement;
 
-                    if (root.TryGetProperty("sessions", out var sessions) &&
-                        sessions.GetArrayLength() > 0) {
+                    if (root.TryGetProperty("sessions", out var sessions) && sessions.GetArrayLength() > 0) {
                         var session = sessions[0];
 
-                        if (session.TryGetProperty("barcodes", out var barcodes) &&
-                            barcodes.GetArrayLength() > 0) {
+                        if (session.TryGetProperty("barcodes", out var barcodes) && barcodes.GetArrayLength() > 0) {
                             var barcode = barcodes[0];
 
                             result.Success = true;
@@ -115,7 +167,6 @@ namespace BarcodeIdScan.Implementations {
                             result.DataBase64 = barcode.GetProperty("data").GetString();
                             result.Length = barcode.GetProperty("length").GetInt32();
 
-                            // Parse rectangle if available
                             if (barcode.TryGetProperty("rectangle", out var rect)) {
                                 result.Rectangle = new BarcodeRectangle {
                                     Left = rect.GetProperty("left").GetInt32(),
